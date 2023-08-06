@@ -1,23 +1,18 @@
-package com.app.api.entity;
+package com.app.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-import jakarta.persistence.*;
+import java.util.List;
 
-@Entity
-@Table(name = "book")
-public class Book {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+public class BookDTO {
     private Long id;
-    @Column(name = "name")
     private String name;
-    @Column(name = "description")
     private String description;
-    @Column(name = "yearOfPublication")
     private Integer yearOfPublication;
-    @Column(name = "bookType")
     private String bookType;
+
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    private List<AuthorDTO> authors;
 
     public Long getId() {
         return id;
@@ -57,5 +52,13 @@ public class Book {
 
     public void setBookType(String bookType) {
         this.bookType = bookType;
+    }
+
+    public List<AuthorDTO> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<AuthorDTO> authors) {
+        this.authors = authors;
     }
 }

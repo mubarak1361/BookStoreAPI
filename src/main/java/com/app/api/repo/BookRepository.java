@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface BookRepository extends CrudRepository<Book,Integer> {
+public interface BookRepository extends CrudRepository<Book,Long> {
 
     String rawQuery = "SELECT * FROM book where year_of_publication IN :yop";
 
-    List<Book> findAllByYearOfPublicationInAndBookType(Set<Integer> yearOfPublication, String bookType);
+    List<Book> findAllByYearOfPublicationInAndBookType(Set<Long> yearOfPublication, String bookType);
 
     @Query(nativeQuery = true, value = rawQuery)
-    List<Book> findAllByYearOfPublicationIn(@Param(value = "yop") Set<Integer> year);
+    List<Book> findAllByYearOfPublicationIn(@Param(value = "yop") Set<Long> year);
 }

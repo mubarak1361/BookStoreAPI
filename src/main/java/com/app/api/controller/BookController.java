@@ -1,5 +1,6 @@
 package com.app.api.controller;
 
+import com.app.api.dto.BookDTO;
 import com.app.api.entity.Book;
 import com.app.api.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping(value = "/books")
-    public List<Book> getBooks(@RequestParam(value = "yearOfPublication", required = false) Set<Integer> year, @RequestParam(value = "bookType", required = false) String bookType){
+    public List<Book> getBooks(@RequestParam(value = "yearOfPublication", required = false) Set<Long> year, @RequestParam(value = "bookType", required = false) String bookType){
         return bookService.getBooks(year,bookType);
     }
 
@@ -25,8 +26,8 @@ public class BookController {
     }
 
     @GetMapping(value = "/books/{id}")
-    public Book getBookById(@PathVariable("id") Integer bookId){
-        return bookService.getBookById(bookId);
+    public BookDTO getBookById(@PathVariable("id") Long bookId, @RequestParam(value = "authorData",required = false) boolean authorData){
+        return bookService.getBookById(bookId,authorData);
     }
 
     @PutMapping(value = "/books")
@@ -35,12 +36,12 @@ public class BookController {
     }
 
     @DeleteMapping(value = "/books/{bookId}")
-    public String deleteBookById(@PathVariable Integer bookId){
+    public String deleteBookById(@PathVariable Long bookId){
         return bookService.deleteBookById(bookId);
     }
 
     @GetMapping(value = "/raw/books")
-    public List<Book> getBooksByRawQuery(@RequestParam(value = "yearOfPublication") Set<Integer> year){
+    public List<Book> getBooksByRawQuery(@RequestParam(value = "yearOfPublication") Set<Long> year){
         return bookService.getBooksByRawQuery(year);
     }
 }
