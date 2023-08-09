@@ -1,9 +1,11 @@
 package com.app.api.controller;
 
+import com.app.api.common.Response;
 import com.app.api.dto.BookDTO;
 import com.app.api.entity.Book;
 import com.app.api.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +28,7 @@ public class BookController {
     }
 
     @GetMapping(value = "/books/{id}")
-    public BookDTO getBookById(@PathVariable("id") Long bookId, @RequestParam(value = "authorData",required = false) boolean authorData){
+    public Response<BookDTO> getBookById(@PathVariable("id") Long bookId, @RequestParam(value = "authorData",required = false) boolean authorData){
         return bookService.getBookById(bookId,authorData);
     }
 

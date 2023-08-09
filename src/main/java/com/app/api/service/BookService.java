@@ -1,5 +1,6 @@
 package com.app.api.service;
 
+import com.app.api.common.Response;
 import com.app.api.dto.AuthorDTO;
 import com.app.api.dto.BookDTO;
 import com.app.api.entity.Book;
@@ -7,6 +8,7 @@ import com.app.api.entity.BookAuthor;
 import com.app.api.repo.BookAuthorRepository;
 import com.app.api.repo.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,9 +39,10 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public BookDTO getBookById(Long bookId, boolean authorData){
-        BookDTO bookDTO = null;
+    public Response<BookDTO> getBookById(Long bookId, boolean authorData){
+        BookDTO bookDTO;
         Optional<Book> book = bookRepository.findById(bookId);
+        Response<BookDTO> response = new Response<>();
         if(book.isPresent()){
             bookDTO = new BookDTO();
             bookDTO.setId(book.get().getId());
@@ -59,8 +62,13 @@ public class BookService {
                 }
                 bookDTO.setAuthors(authorDTOS);
             }
+            response.setStatus(HttpStatus.OK.value());
+            response.setData(bookDTO);
+        }else{
+            response.setStatus(HttpStatus.NO_CONTENT.value());
+            response.setError("No Book available");
         }
-        return bookDTO;
+        return response;
     }
 
     public Book updateBook(Book book){
